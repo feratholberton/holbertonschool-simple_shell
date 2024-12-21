@@ -6,71 +6,53 @@
 #include <unistd.h>
 
 
-/**
- * main - Entry of the shell
- * @line: line from stdin
- * @len: len from line
- * Return: 0
- */
-
 int main()
 {
-        int var, status, lenline = 0;
-        char **array;
-        char *line = NULL, var1, *var2, *tok;
-        ssize_t len = 0, i = 0;
-        pid_t pro, parent;
+    char *line = NULL;
+    size_t len = 0;
+    ssize_t nread;
 
-        pro = getpid();
-        pro = fork();
-        parent = getppid();
-        if (pro == 0)
-        {
-                printf("soy el hijo(funcion fork)");
-
+    while (1) {
+        printf("$ ");
+        nread = getline(&line, &len, stdin);
+        
+        if (nread == -1 || strcmp(line, "exit\n") == 0) {
+            break;
         }
-        else
-        {
-                wait(&status);
-                printf("soy el padre");
-        }
-        printf("$");
-        while (var = getline(&line, &len, stdin) != -1)
-        {
-                printf("$");
-                if (strcmp(line, "exit\n") == 0)
-                {
-                        if (pro == 0)
-                        {
-                                kill(pro, parent);
-                                exit;
 
-                        }
-                        break;
-                }
-                tok = strtok(line, " ");
-                array = malloc(lenline * sizeof(char*));
-                if (array == NULL)
-                        exit(007);
-                array[i] = strdup(tok);
-                printf("el primer token es:%s\n", tok);
-                i++;
-                var2 = line;
-                lenline = strlen(var2);
-                while (tok != NULL)
-                {
-                        tok = strtok(NULL, " ");
-                        array[i] = tok;
-                        printf("next token es:%s\n", array[i]);
-
-                        i++;
-                }
+        // Eliminar el newline
+        line[strcspn(line, "\n")] = 0;
+        
+        pid_t pid = fork();
+        
+        if (pid == -1) {
+            perror("fork failed");
+            continue;
         }
-        printf("%d\n", var);
-        free(line);
-        free(tok);
-        free(array);
-        kill(pro, parent);
-        exit;
-        return (0);
+        
+        if (pid == 0) { // Proceso hijo
+            char *array[64]; // Tamaño máximo razonable para argumentos
+            int i = 0;
+            
+            // Separar la línea en tokens
+            char *token = strtok(line, " ");
+            while (token != NULL && i < 63) {
+                array[i++] = token;
+                token = strtok(NULL, " ");
+            }
+            array[i] = NULL; // Importante: NULL al final para execvp
+            
+            // Ejecutar el comando
+            if (execvp(array[0], array) == -1) {
+                perror("execvp failed");
+                exit(EXIT_FAILURE);
+            }
+        } else { // Proceso padre
+            int status;
+            waitpid(pid, &status, 0);
+        }
+    }
+
+    free(line);
+    return 0;
 }
