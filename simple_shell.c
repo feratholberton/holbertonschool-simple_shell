@@ -21,6 +21,7 @@ char *get_line()
 	{
 		if (feof(stdin))
 			printf("\n");
+
 		free(line);
 		return (NULL);
 
@@ -29,10 +30,10 @@ char *get_line()
 	if (line[line_length - 1] == '\n')
 		line[line_length - 1] = '\0';
 
-	if (strlen(line) == 0)
+	if (line[0] == '\0')
 	{
 		free(line);
-		return (NULL);
+		return "";
 	}
 
 	return (line);
@@ -46,16 +47,19 @@ int main(void)
 
 	while (1)
 	{
-		printf("Type something human: ");
+		printf("#cisfun$ ");
 
 		line = get_line();
 		if (line == NULL)
 			break;
+		if (strlen(line) == 0)
+			continue;
 
 		pid = fork();
 		if (pid == -1)
 		{
 			perror("fork failed");
+			free(line);
 			continue;
 		}
 
@@ -69,6 +73,7 @@ int main(void)
 			if (execve(line, args, NULL) == -1)
 			{
 				perror("./shell");
+				free(line);
 				exit(EXIT_FAILURE);
 			}
 		}
@@ -76,8 +81,9 @@ int main(void)
 		{
 			waitpid(pid, &status, 0);
 		}
+
+		free(line);
 	}
 
-	free(line);
 	return (0);
 }
