@@ -7,4 +7,6 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
+char *get_line();
+
 #endif
