@@ -1,49 +1,85 @@
-#include "main.h"
+#include "simple_shell.h"
 
 /**
- * main - Simple shell implementation
- * Return: 0 on success
+ * main - UNIX (only) command line interpreter
+ * Return: 0 or exit status
  */
+
+char *get_line()
+{
+	char *line = NULL;
+	size_t len = 0;
+	ssize_t line_length;
+
+	line_length = getline(&line, &len, stdin);
+
+	if (line_length == -1)
+	{
+		if (feof(stdin))
+			printf("\n");
+
+		free(line);
+		return (NULL);
+
+	}
+
+	if (line[line_length - 1] == '\n')
+		line[line_length - 1] = '\0';
+
+	if (line[0] == '\0')
+	{
+		free(line);
+		return "";
+	}
+
+	return (line);
+}
+
 int main(void)
 {
-	char *line = NULL, **array;
-	ssize_t nread;
-	size_t len = 0;
 	pid_t pid;
 	int status;
+	char *line;
 
 	while (1)
 	{
-		printf("$ ");
-		nread = getline(&line, &len, stdin);
-		if (nread == -1 || strcmp(line, "exit\n") == 0)
+		printf("#cisfun$ ");
+
+		line = get_line();
+		if (line == NULL)
 			break;
-
-		if (nread == 1)
+		if (strlen(line) == 0)
 			continue;
-
-		if (line[nread - 1] == '\n')
-			line[nread - 1] = '\0';
 
 		pid = fork();
 		if (pid == -1)
 		{
 			perror("fork failed");
+			free(line);
 			continue;
 		}
+
 		if (pid == 0)
 		{
-			array = tokenize_line(line, nread);
-			if (array == NULL)
+			char *args[2];
+
+			args[0] = line;
+			args[1] = NULL;
+
+			if (execve(line, args, NULL) == -1)
+			{
+				perror("./shell");
+				free(line);
 				exit(EXIT_FAILURE);
-			execute_command(array);
-			exit(EXIT_SUCCESS);
+			}
 		}
 		else
 		{
 			waitpid(pid, &status, 0);
 		}
+
+		free(line);
 	}
-	free(line);
+
 	return (0);
 }
