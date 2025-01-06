@@ -11,6 +11,7 @@ int main(void)
 	int status;
 	char *line;
 	char **args;
+	size_t count;
 
 	while (1)
 	{
@@ -18,12 +19,9 @@ int main(void)
 
 		line = get_line();
 		if (line == NULL)
-			break;
-
-		if (strlen(line) == 0)
 			continue;
 
-		args = get_tokens(line);
+		args = get_tokens(line, &count);
 		if (args == NULL)
 		{
 			free(line);
@@ -35,7 +33,7 @@ int main(void)
 		{
 			perror("fork failed");
 			free(line);
-			free_tokens(args, 0);
+			free_tokens(args, count);
 			continue;
 		}
 
@@ -44,8 +42,8 @@ int main(void)
 			if (execve(args[0], args, NULL) == -1)
 			{
 				perror("./shell");
+				free_tokens(args, count);
 				free(line);
-				free_tokens(args, 0);
 				exit(EXIT_FAILURE);
 			}
 		}
@@ -55,7 +53,7 @@ int main(void)
 		}
 
 		free(line);
-		free_tokens(args, 0);
+		free_tokens(args, count);
 	}
 
 	return (0);

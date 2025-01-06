@@ -15,7 +15,7 @@ char *get_line()
 
         if (line_length == -1)
         {
-                if (feof(stdin))
+                if (line)
                         printf("\n");
 
                 free(line);
@@ -29,7 +29,7 @@ char *get_line()
         if (line[0] == '\0')
         {
                 free(line);
-                return "";
+                return NULL;
         }
 
         return (line);

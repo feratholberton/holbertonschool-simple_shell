@@ -1,15 +1,16 @@
 #include "simple_shell.h"
 
-char **get_tokens(char *line)
+char **get_tokens(char *line, size_t *count)
 {
 	char **tokens = NULL;
 	char *token;
-	size_t count = 0;
 	size_t capacity = 10;
 	char **new_tokens;
 
+	*count = 0;
+
 	tokens = malloc(capacity * sizeof(char *));
-	if (tokens == NULL)
+	if (!tokens)
 	{
 		perror("malloc failed");
 		return (NULL);
@@ -18,31 +19,31 @@ char **get_tokens(char *line)
 	token = strtok(line, " ");
 	while (token != NULL)
 	{
-		if (count >= capacity)
+		if (*count >= capacity)
 		{
 			capacity *= 2;
 			new_tokens = realloc(tokens, capacity * sizeof(char *));
-			if (new_tokens == NULL)
+			if (!new_tokens)
 			{
 				perror("realloc failed");
-				free(tokens);
+				free_tokens(tokens, *count);
 				return (NULL);
 			}
 			tokens = new_tokens;
 		}
 
-		tokens[count] = strdup(token);
-		if (tokens[count] == NULL)
+		tokens[*count] = strdup(token);
+		if (!tokens[*count])
 		{
 			perror("strdup failed");
-			free_tokens(tokens, count);
+			free_tokens(tokens, *count);
 			return (NULL);
 		}
 
-		count++;
+		(*count)++;
 		token = strtok(NULL, " ");
 	}
 
-	tokens[count] = NULL;
+	tokens[*count] = NULL;
 	return (tokens);
 }
