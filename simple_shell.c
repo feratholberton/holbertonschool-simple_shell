@@ -15,7 +15,8 @@ int main(void)
 
 	while (1)
 	{
-		printf("#cisfun$ ");
+		if (isatty(STDIN_FILENO))
+			printf("#cisfun$ ");
 
 		line = get_line();
 		if (line == NULL)
