@@ -8,5 +8,7 @@
 #include <sys/wait.h>
 
 char *get_line();
+char **get_tokens(char *);
+void free_tokens(char **, size_t);
 
 #endif
