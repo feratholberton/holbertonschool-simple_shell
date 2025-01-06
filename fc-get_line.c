@@ -22,7 +22,7 @@ char *get_line()
         if (line[line_length - 1] == '\n')
                 line[line_length - 1] = '\0';
 
-        if (line[0] == '\0')
+        if (strspn(line, " ") == strlen(line))
         {
                 free(line);
                 return strdup("");
