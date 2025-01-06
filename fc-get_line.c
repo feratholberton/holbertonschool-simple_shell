@@ -10,6 +10,8 @@ char *get_line()
         char *line = NULL;
         size_t len = 0;
         ssize_t line_length;
+	int all_spaces;
+	size_t i;
 
         line_length = getline(&line, &len, stdin);
 
@@ -22,11 +24,21 @@ char *get_line()
         if (line[line_length - 1] == '\n')
                 line[line_length - 1] = '\0';
 
-        if (strspn(line, " ") == strlen(line))
-        {
+	all_spaces = 1;
+	for (i = 0; line[i] != '\0'; i++)
+	{
+		if (line[i] != ' ')
+		{
+			all_spaces = 0;
+			break;
+		}
+	}
+
+	if (all_spaces)
+	{
                 free(line);
                 return strdup("");
-        }
+	}
 
         return (line);
 }
