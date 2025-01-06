@@ -9,7 +9,7 @@ int main(void)
 {
 	pid_t pid;
 	int status;
-	char *line;
+	char *line, *command_path;
 	char **args;
 	size_t count;
 
@@ -35,12 +35,22 @@ int main(void)
 			continue;
 		}
 
+		command_path = get_path(args[0]);
+		if (!command_path)
+		{
+			fprintf(stderr, "%s: Command not found\n", args[0]);
+			free(line);
+			free_tokens(args, count);
+			continue;
+		}
+
 		pid = fork();
 		if (pid == -1)
 		{
 			perror("fork failed");
 			free(line);
 			free_tokens(args, count);
+			free(command_path);
 			continue;
 		}
 
@@ -51,6 +61,7 @@ int main(void)
 				perror("./shell");
 				free_tokens(args, count);
 				free(line);
+				free(command_path);
 				exit(EXIT_FAILURE);
 			}
 		}
@@ -61,6 +72,7 @@ int main(void)
 
 		free(line);
 		free_tokens(args, count);
+		free(command_path);
 	}
 
 	return (0);

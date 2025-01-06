@@ -10,5 +10,6 @@
 char *get_line();
 char **get_tokens(char *, size_t *);
 void free_tokens(char **, size_t);
+char *get_path(const char *);
 
 #endif
