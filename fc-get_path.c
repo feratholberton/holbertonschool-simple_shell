@@ -15,6 +15,7 @@ char *get_path(const char *command)
 	{
 		if (access(command, X_OK) == 0)
 			return (strdup(command));
+
 		return (NULL);
 	}
 
@@ -23,14 +24,13 @@ char *get_path(const char *command)
 		if (strncmp(environ[i], "PATH=", 5) == 0)
 		{
 			path_env = environ[i] + 5;
-			printf("DEBUG: PATH=%s\n", path_env);
 			break;
 		}
 	}
 
 	if (!path_env)
-		path_env = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin";
-		/**return (NULL);*/
+		/**path_env = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin";*/
+		return (NULL);
 
 	path_copy = strdup(path_env);
 	if (!path_copy)

@@ -56,7 +56,7 @@ int main(void)
 
 		if (pid == 0)
 		{
-			if (execve(args[0], args, NULL) == -1)
+			if (execve(command_path, args, NULL) == -1)
 			{
 				perror("./shell");
 				free_tokens(args, count);
