@@ -19,7 +19,13 @@ int main(void)
 
 		line = get_line();
 		if (line == NULL)
+			break;
+
+		if (strlen(line) == 0)
+		{
+			free(line);
 			continue;
+		}
 
 		args = get_tokens(line, &count);
 		if (args == NULL)

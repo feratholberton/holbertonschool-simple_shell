@@ -15,12 +15,8 @@ char *get_line()
 
         if (line_length == -1)
         {
-                if (line)
-                        printf("\n");
-
                 free(line);
                 return (NULL);
-
         }
 
         if (line[line_length - 1] == '\n')
@@ -29,7 +25,7 @@ char *get_line()
         if (line[0] == '\0')
         {
                 free(line);
-                return NULL;
+                return strdup("");
         }
 
         return (line);
