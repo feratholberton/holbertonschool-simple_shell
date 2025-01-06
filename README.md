@@ -134,3 +134,86 @@ free_tokens(args, count);
 free(command_path);
 ```
 - Ensures all dynamically allocated memory is freed after each command execution.
+
+## Helper functions
+
+### get_line()
+
+Gets a line from the standard input (stdin).
+	
+This function reads a line of input from the user, trims the newline character (if present), and checks if the input is entirely spaces. It dynamically allocates memory for the line, which must be freed by the caller.
+
+Return:
+- A pointer to the dynamically allocated string containing the input line, with the newline character removed.
+- If the input is all spaces, an empty string is returned (dynamically allocated).
+- If EOF (Ctrl+D) or an error occurs, NULL is returned.
+
+#### Initialization
+```c
+char *line = NULL;
+size_t len = 0;
+ssize_t line_length;
+int all_spaces;
+size_t i;
+```
+- `line`: A pointer to hold the input string.
+- `len`: Holds the allocated size for getline.
+- `line_length`: Stores the number of characters read by getline.
+- `all_spaces`: Flag to determine if the input contains only spaces.
+- `i`: Loop index to iterate through the input string.
+
+#### Read Input
+```c
+line_length = getline(&line, &len, stdin);
+```
+- Gets a line from the user input.
+- Allocates memory dynamically for line if it’s NULL.
+
+#### Handle EOF or Error
+```c
+if (line_length == -1)
+{
+	free(line);
+	return (NULL);
+}
+```
+- If getline fails (EOF or error), frees any allocated memory and returns NULL.
+
+#### Remove Trailing Newline
+```c
+if (line[line_length - 1] == '\n')
+	line[line_length - 1] = '\0';
+```
+- Replaces the trailing newline character with a null terminator (\0), effectively trimming it.
+
+#### Check for All Spaces
+```c
+all_spaces = 1;
+for (i = 0; line[i] != '\0'; i++)
+{
+	if (line[i] != ' ')
+	{
+		all_spaces = 0;
+		break;
+	}
+}
+```
+- Iterates through the string to determine if it consists entirely of spaces.
+- If a non-space character is found, sets all_spaces to 0 and exits the loop early.
+
+### Handle All-Spaces Input
+```c
+if (all_spaces)
+{
+	free(line);
+	return strdup("");
+}
+```
+- If the input contains only spaces, frees the allocated memory for line.
+- Returns an empty string (dynamically allocated with strdup) for consistent behavior.
+
+#### Return Valid Input
+```c
+return (line);
+```
+- Returns the trimmed input string for further processing.
