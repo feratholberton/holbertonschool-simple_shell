@@ -20,7 +20,11 @@ char *get_line()
                 free(line);
                 return (NULL);
         }
-
+	if (strcmp(line, "exit\n") == 0)
+        {
+            free(line);
+	    return (NULL);
+        }
         if (line[line_length - 1] == '\n')
                 line[line_length - 1] = '\0';
 
