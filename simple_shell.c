@@ -5,7 +5,7 @@
  * Return: 0 or exit status
  */
 
-int main(void)
+int main()
 {
 	pid_t pid;
 	int status;

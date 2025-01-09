@@ -11,7 +11,7 @@ char *get_path(const char *command)
 	if (!command)
 		return (NULL);
 
-	if (strchr(command, '/'))
+	if (strchr(command, '/') || strchr(command, '.'))
 	{
 		if (access(command, X_OK) == 0)
 			return (strdup(command));
