@@ -20,7 +20,10 @@ int main()
 
 		line = get_line();
 		if (line == NULL)
+		{
+			free(line);
 			break;
+		}
 
 		if (strlen(line) == 0)
 		{
