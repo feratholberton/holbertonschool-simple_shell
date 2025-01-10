@@ -4,10 +4,12 @@
  * main - UNIX (only) command line interpreter
  * Return: 0 or exit status
  */
+
 int main()
 {
     char *line;
     char **args;
+    size_t count = 0;
 
     while (1)
     {
@@ -18,17 +20,17 @@ int main()
         if (line == NULL)
             break;
 
-        args = parse_line(line);
+        args = parse_line(line, &count);
         if (args == NULL)
         {
             free(line);
             continue;
         }
 
-        exec_line(args);
+        exec_line(args); /* Pass count and line to exec_line */
 
         free(line);
-        free_tokens(args, 0);
+        free_tokens(args, count);
     }
 
     return (0);

@@ -1,13 +1,13 @@
 #include "simple_shell.h"
 
-extern char **environ;
-
-/* Declare get_path to resolve implicit declaration errors */
 char *get_path(const char *command);
+
 
 /**
  * exec_line - Executes a command using execve
  * @args: Array of command and its arguments
+ * @count: Number of tokens in the args array
+ * @line: Original input line (for cleanup in error cases)
  */
 void exec_line(char **args)
 {
@@ -27,12 +27,11 @@ void exec_line(char **args)
     pid = fork();
     if (pid == -1)
     {
-        perror("fork failed");
-        free(command_path);
+        free(command_path);       /* Cleanup path */
         return;
     }
 
-    if (pid == 0)
+    if (pid == 0) /* Child process */
     {
         if (execve(command_path, args, NULL) == -1)
         {
@@ -41,12 +40,12 @@ void exec_line(char **args)
             exit(EXIT_FAILURE);
         }
     }
-    else
+    else /* Parent process */
     {
         waitpid(pid, NULL, 0);
     }
 
-    free(command_path);
+    free(command_path); /* Cleanup after successful execution */
 }
 
 /**
