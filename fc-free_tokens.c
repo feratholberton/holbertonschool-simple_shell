@@ -1,5 +1,11 @@
 #include "simple_shell.h"
 
+/**
+ * free_tokens - freed given tokens
+ * @tokens: tokens
+ * @count: count
+ */
+
 void free_tokens(char **tokens, size_t count)
 {
 	size_t i;
