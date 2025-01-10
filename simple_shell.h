@@ -8,8 +8,8 @@
 #include <sys/wait.h>
 
 char *get_line();
-char **get_tokens(char *, size_t *);
-void free_tokens(char **, size_t);
-char *get_path(const char *);
+char **parse_line(char *line);
+void exec_line(char **args);
+void free_tokens(char **tokens, size_t count);
 
 #endif
