@@ -5,34 +5,34 @@
  * Return: 0 or exit status
  */
 
-int main()
+int main(void)
 {
-    char *line;
-    char **args;
-    size_t count = 0;
+	char *line;
+	char **args;
+	size_t count = 0;
 
-    while (1)
-    {
-        if (isatty(STDIN_FILENO))
-            printf("#cisfun$ ");
+	while (1)
+	{
+		if (isatty(STDIN_FILENO))
+			printf("#cisfun$ ");
 
-        line = get_line();
-        if (line == NULL)
-            break;
+		line = get_line();
+		if (line == NULL)
+			break;
 
-        args = parse_line(line, &count);
-        if (args == NULL)
-        {
-            free(line);
-            continue;
-        }
+		args = parse_line(line, &count);
+		if (args == NULL)
+		{
+			free(line);
+			continue;
+		}
 
-        exec_line(args); /* Pass count and line to exec_line */
+		exec_line(args);
 
-        free(line);
-        free_tokens(args, count);
-    }
+		free(line);
+		free_tokens(args, count);
+	}
 
-    return (0);
+	return (0);
 }
 
