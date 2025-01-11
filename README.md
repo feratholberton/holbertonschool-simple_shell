@@ -44,7 +44,7 @@ The shell operates in a loop following these three main steps:
 Clone the repository:
 ```
 git clone https://github.com/feratholberton/holbertonschool-simple_shell.git
-cd simple_shell
+cd holbertonschool-simple_shell
 ```
 
 Compile the source code:
