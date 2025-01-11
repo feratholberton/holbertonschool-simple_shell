@@ -19,6 +19,7 @@ This function implements a basic command line shell. It repeatedly:
 
  Edge cases:
  - Exits on `Ctrl+D` (end-of-file condition).
+ - Exits on "exit" command, comparing line with "exit\n".
  - Prints "Command not found" for non-existent commands.
  - Handles memory allocation errors during tokenization or path resolution.
  
