@@ -16,13 +16,35 @@ The Simple Shell is a custom implementation of a Unix shell. It serves as a comm
 ## How it works
 
 The shell operates in a loop following these three main steps:
-### -1 Read:
-        - Reads the user's input using the getline() function.
-        - Cleans unnecessary whitespace and tabs.
+### 1 - Read:
+- Reads the user's input using the getline() function.
+- Cleans unnecessary whitespace and tabs.
 
-### -2 Parse:
-        - Tokenizes the input into an array of strings (argv[]), separating the command and arguments.
+### 2 - Parse:
+- Tokenizes the input into an array of strings (argv[]), separating the command and arguments.
 
-### -3 Execute:
-        - Checks for the command in the PATH or as an absolute/relative path.
-        - Uses fork() and execve() to create a new process to execute the command.    
+### 3 - Execute:
+- Checks for the command in the PATH or as an absolute/relative path.
+- Uses fork() and execve() to create a new process to execute the command.
+
+##Files
+Filename		Description
+simple_shell.c		Main program and entry point of the shell.
+simple_shell.h		Header file with function prototypes and macros.
+fc-get_line.c		Reads and cleans user input from stdin.
+fc-parse_line.c		Tokenizes the input line into commands and arguments.
+fc-exec_line.c		Executes the parsed command using execve().
+fc-free_tokens.c	Frees dynamically allocated memory for tokens.
+
+##Installation and Compilation
+
+Clone the repository:
+```
+	git clone https://github.com/<your-username>/simple_shell.git
+	cd simple_shell
+```
+
+Compile the source code:
+```
+gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
+```
