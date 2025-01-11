@@ -43,7 +43,7 @@ The shell operates in a loop following these three main steps:
 
 Clone the repository:
 ```
-git clone https://github.com/<your-username>/simple_shell.git
+git clone https://github.com/feratholberton/holbertonschool-simple_shell.git
 cd simple_shell
 ```
 
