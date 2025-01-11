@@ -27,7 +27,7 @@ The shell operates in a loop following these three main steps:
 - Checks for the command in the PATH or as an absolute/relative path.
 - Uses fork() and execve() to create a new process to execute the command.
 
-##Files
+## Files
 
 | Filename | Description |
 | -------- | ------- |
@@ -39,7 +39,7 @@ The shell operates in a loop following these three main steps:
 | fc-free_tokens.c | Frees dynamically allocated memory for tokens. |
 
 
-##Installation and Compilation
+## Installation and Compilation
 
 Clone the repository:
 ```
