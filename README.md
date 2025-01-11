@@ -16,13 +16,13 @@ The Simple Shell is a custom implementation of a Unix shell. It serves as a comm
 ## How it works
 
 The shell operates in a loop following these three main steps:
-###-1 Read:
+### -1 Read:
         - Reads the user's input using the getline() function.
         - Cleans unnecessary whitespace and tabs.
 
-###-2 Parse:
+### -2 Parse:
         - Tokenizes the input into an array of strings (argv[]), separating the command and arguments.
 
-###-3 Execute:
+### -3 Execute:
         - Checks for the command in the PATH or as an absolute/relative path.
         - Uses fork() and execve() to create a new process to execute the command.    
